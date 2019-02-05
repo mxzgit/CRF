@@ -5,6 +5,9 @@ import codecs
 import nltk 
 from sklearn.model_selection import train_test_split
 import pycrfsuite
+import numpy as np
+from sklearn.metrics import classification_report
+
 
 
 with codecs.open("reuters.xml","r","utf-8") as f:
@@ -99,6 +102,7 @@ y = [get_labels(doc) for doc in data]
 
 X_train,X_test,Y_train,Y_test = train_test_split(x,y,test_size=0.2)
 
+"""
 trainer = pycrfsuite.Trainer(verbose=True)
 for xseq, yseq in zip(X_train,Y_train):
 	trainer.append(xseq,yseq)
@@ -111,3 +115,23 @@ trainer.set_params({
 	})
 
 trainer.train('crf.model')
+"""
+
+tagger = pycrfsuite.Tagger()
+tagger.open('crf.model')
+Y_pred = [tagger.tag(xseq) for xseq in X_test]
+
+i = 12
+
+for x,y in zip(Y_pred[i], [x[1].split("=")[1] for x in X_test[i]]):
+	print("%s (%s)"%(y,x))
+
+
+labels = {"N":1,"I":0}
+
+predictionq = np.array([labels[tag] for row in Y_pred for tag in row])
+truth       = np.array([labels[tag] for row in Y_test for tag in row])
+
+print(classification_report(
+	truth,predictionq,
+	target_names=["I","N"])) 
