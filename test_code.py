@@ -1,4 +1,8 @@
 def pos_calc(sentence,search_str):
+	
+
+	sentence = sentence.lstrip()
+	search_str = search_str.lstrip()
 
 	data  = []
 	start = 0
@@ -26,4 +30,4 @@ def pos_calc(sentence,search_str):
 
 
 
-print(pos_calc("mehdi is a mehdi lsks,lsjdkls zidpzoz mehdi ,azdjad mehdi","mehdi is"))
+print(pos_calc("             mehdi is a mehdi lsks, lsjdkls zidpzoz mehdi ,azdjad mehdi","mehdi"))
