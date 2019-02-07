@@ -57,9 +57,11 @@ def list_tags(sentence,tags):
 	list_tags = []
 	
 	for element in tags:
-		data = pos_calc(sentence,element)
-		list_tags.append(pos_tag(sentence,data))
 
+		data = pos_calc(sentence,element)
+		
+		list_tags.append(pos_tag(sentence,data))
+		
 	list_tags = np.array(list_tags)
 	
 
@@ -67,8 +69,11 @@ def list_tags(sentence,tags):
 	for i in range(len(list_tags[0])):
 
 		sub_set = set(list_tags[0:,i])
-		if(len(sub_set) == 1):
+		print(sub_set)
+		if(len(sub_set) == 1 and "O" in sub_set):
 			final_tags.append("O")
+		elif(len(sub_set) == 1 and "O" not in sub_set):
+			final_tags.append(list(sub_set)[0])
 		else: 
 			sub_set.remove("O")
 			final_tags.append(list(sub_set)[0]) 
@@ -84,15 +89,9 @@ def tag_sentences(sentences,tags):
 if __name__=="__main__":
 
 	results = []
-	sentences = ["outdoor collection ballerines toile corail blanc 40",
-	"outdoor collection blouse rayee col tunisien gris 44",
-	"outdoor collection chemise maille imprimee ecru gris 42 44",
-	"outdoor collection jean battle coupe droite stone 48",
-	"outifrance sangle d arrimage a crochets pro",
-	"ouvre boites manche rond",
-	"ovation pneu ovation w 586 xl 225 40r18 92 h tourisme hiver",
-	"overseas oreiller 40x60cm coton gris"]
+	sentences = ["outdoor collection ballerines toile corail blanc 40"]
 
-	tags = ["outdoor collection", "maille", "outifrance","pro","ovation","overseas","gris"]
+	tags = ["40"]
 
+	x = tag_sentences(sentences,tags)
 	print(tag_sentences(sentences,tags))
