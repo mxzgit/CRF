@@ -76,6 +76,10 @@ def list_tags(sentence,tags):
 
 	return final_tags
 
+def tag_sentences(sentences,tags):
+
+	return [list_tags(sentence,tags) for sentence in sentences]
+
 
 if __name__=="__main__":
 
@@ -85,13 +89,10 @@ if __name__=="__main__":
 	"outdoor collection chemise maille imprimee ecru gris 42 44",
 	"outdoor collection jean battle coupe droite stone 48",
 	"outifrance sangle d arrimage a crochets pro",
-	"titleNormalized":"ouvre boites manche rond",
+	"ouvre boites manche rond",
 	"ovation pneu ovation w 586 xl 225 40r18 92 h tourisme hiver",
 	"overseas oreiller 40x60cm coton gris"]
 
 	tags = ["outdoor collection", "maille", "outifrance","pro","ovation","overseas","gris"]
 
-	for sentence in sentences:
-		results.append(list_tags(sentence,tags)) 
-
-	print(results)
+	print(tag_sentences(sentences,tags))
