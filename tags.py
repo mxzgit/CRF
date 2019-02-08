@@ -51,50 +51,26 @@ def pos_tag(sentence,data):
 
 def list_tags(sentence,tags,tag):
 
+
 	sentence = sentence.lstrip()
 
 	final_tags = []
 	list_tags = []
 	
-	for element in tags:
-		data = pos_calc(sentence,element,tag)
-		list_tags.append(pos_tag(sentence,data))
 
-	list_tags = np.array(list_tags)
-	
+	if (len(tags) > 0):
+		
+		for element in tags:
+			data = pos_calc(sentence,element,tag)
+			list_tags.append(pos_tag(sentence,data))
 
-
-	for i in range(len(list_tags[0])):
-
-		sub_set = set(list_tags[0:,i])
-		if(len(sub_set) == 1 and "O" in sub_set):
-			final_tags.append("O")
-		elif(len(sub_set) == 1 and "O" not in sub_set):
-			final_tags.append(list(sub_set)[0])
-		else: 
-			sub_set.remove("O")
-			final_tags.append(list(sub_set)[0]) 
+		list_tags = np.array(list_tags)
+		
 
 
-	return final_tags
+		for i in range(len(list_tags[0])):
 
-def tag_sentences(sentence,dic_tags):
-
-	return [list_tags(sentence,dic_tags[tag],tag) for tag in dic_tags]
-
-
-
-def clean_tags(lists):
-	
-	final_result = []
-
-
-	for i in range(len(lists)):
-		sub_list = np.array(lists[i])
-		final_tags = []
-
-		for j in range(len(sub_list[0])):
-			sub_set = set(sub_list[0:,j])
+			sub_set = set(list_tags[0:,i])
 			if(len(sub_set) == 1 and "O" in sub_set):
 				final_tags.append("O")
 			elif(len(sub_set) == 1 and "O" not in sub_set):
@@ -103,9 +79,43 @@ def clean_tags(lists):
 				sub_set.remove("O")
 				final_tags.append(list(sub_set)[0]) 
 
-		final_result.append(final_tags)
+	else:
+		
+		final_tags = ["O"]*(sentence.count(" ")+1)
+
+	return final_tags
+
+def tag_sentences(sentence,dic_tags):
+	
+	sub_result = [list_tags(sentence,dic_tags[tag],tag) for tag in dic_tags]
+	
+	return sub_result
+
+
+
+def clean_tags(lists):
+	
+	final_result = []
+
+	sub_list = np.array(lists)
+	final_tags = []
+	#print(sub_list)
+	for j in range(len(sub_list[0])):
+		sub_set = set(sub_list[0:,j])
+		if(len(sub_set) == 1 and "O" in sub_set):
+			final_tags.append("O")
+		elif(len(sub_set) == 1 and "O" not in sub_set):
+			final_tags.append(list(sub_set)[0])
+		else:
+			if("O" in sub_set): 
+				sub_set.remove("O")
+			final_tags.append(list(sub_set)[0]) 
+
+	final_result.append(final_tags)
 
 	return final_result
+
+
 
 """
 
